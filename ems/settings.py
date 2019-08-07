@@ -38,9 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-
+    'channels',
     'haystack',
-
+    'django_chatter',
     'poll',
     'employee',
     'rest_framework',
@@ -63,7 +63,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'employee.middlewares.RoleMiddleware'
+    'employee.middlewares.RoleMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'ems.urls'
@@ -81,14 +82,15 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                #'poll.context_processors.polls_count'
+                #'poll.context_processors.polls_count',
+                #'django_chatter.context_processors.get_chatroom_list',
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'ems.wsgi.application'
-
+ASGI_APPLICATION = 'ems.routing.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
@@ -153,6 +155,7 @@ EMAIL_USE_TLS = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_ROOT =  os.path.join(BASE_DIR, 'media') 
 MEDIA_URL = '/media/'
@@ -177,3 +180,11 @@ ELASTICSEARCH_DSL={
     },
 }
 
+CHANNEL_LAYERS = {
+  'default': {
+      'BACKEND': 'channels_redis.core.RedisChannelLayer',
+      'CONFIG': {
+          "hosts": [('127.0.0.1', 6379)],
+      },
+  },
+}

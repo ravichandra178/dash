@@ -47,4 +47,5 @@ urlpatterns = [
     path('logout/', user_logout, name="user_logout"),
     path('profile/', MyProfile.as_view(), name="my_profile"),
     path('profile/update', ProfileUpdate.as_view(), name="update_profile"),
+    path('chat/', include('django_chatter.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
