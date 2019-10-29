@@ -15,7 +15,7 @@ class LeaveRequestCreate(CreateView):
         form.instance.created_by = self.request.user
         if form.is_valid():
             subject = form.cleaned_data['reason']
-            message = form.cleaned_data['message']+' leave from '+str(form.cleaned_data['from_date'])+' to '+str(form.cleaned_data['to_date'])
+            message = form.cleaned_data['message']+' leave from '+str(form.cleaned_data['from_date'])+' to '+str(form.cleaned_data['to_date'])+' '+'To approve http://31.220.62.183:8083/admin/leave/leaverequest/'
             sender = self.request.user.email
 
             recipients = ['dashboard.mad@gmail.com'] 
